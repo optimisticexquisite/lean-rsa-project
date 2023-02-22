@@ -1,0 +1,17 @@
+import Lake
+open Lake DSL
+
+package «RSAproject» {
+  -- add package configuration options here
+}
+require mathlib from git
+    "https://github.com/leanprover-community/mathlib4.git"
+
+lean_lib «rSAproject» {
+  -- add library configuration options here
+}
+
+@[default_target]
+lean_exe «RSAproject» {
+  root := `Main
+}

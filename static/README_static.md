@@ -1,0 +1,1 @@
+This folder contains all the necessary information we are using in this project.
