@@ -1,5 +1,5 @@
-# lean-rsa-project
-A lean project on RSA encryption<br />
+# A lean project on RSA encryption
+<br />
 RSA is an assymetric (public key) cryptographic algorithm. Public Key cryptography involves
 generating a key pair, consisting of a public key and a private key. In the simplest
 terms, the key is a set of numbers, which in some way are mathematically related.<br />
