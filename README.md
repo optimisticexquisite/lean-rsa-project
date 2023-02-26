@@ -18,7 +18,7 @@ We will also create a program for encrypting and decrypting large numbers as wel
 
 
 # Technicalities
-This project is running on Lean4 version leanprover/lean4:nightly-2023-02-23 <br /> <br />
+This project is running on Lean4 version leanprover/lean4:nightly-2023-02-10 <br /> <br />
 
 Requires: Mathlib from https://github.com/leanprover-community/mathlib4.git <br /> <br />
 To save time initializing this package, you can directly copy the folder "lake-packages" from another working Lean4 project folder with the specified requirements.
