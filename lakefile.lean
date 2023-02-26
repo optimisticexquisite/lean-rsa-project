@@ -7,11 +7,11 @@ package «RSAproject» {
 require mathlib from git
     "https://github.com/leanprover-community/mathlib4.git"
 
-lean_lib «rSAproject» {
+lean_lib «RSAProject» {
   -- add library configuration options here
 }
 
 @[default_target]
-lean_exe «RSAproject» {
+lean_exe «rsa-project» {
   root := `Main
 }
