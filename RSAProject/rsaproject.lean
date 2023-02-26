@@ -31,11 +31,18 @@ def decryption (c : ℕ) (d : ℕ) (n : ℕ) : ℕ :=
 #eval encryption 107 6499 6336
 #eval decryption 467 7 6336
 
--- def factorization (n : ℕ) : ℕ × ℕ :=
---   let p := Nat.find_greatest_divisor n
---   let q := n / p
---   (p,q)
+
+partial def least_prime_factorization (n : ℕ) (div : ℕ): ℕ × ℕ :=
+  if n % div = 0 then  (div,(n/div))
+  else least_prime_factorization n (div+1)
+ #eval least_prime_factorization 1591 2
 -- #eval factorization 2430101
--- def decryption_by_brute_force (c : ℕ) (n : ℕ) : ℕ :=
---   let (p,q) := Nat.factorization n
+def decryption_by_brute_force (c : ℕ) (e : ℕ) (n : ℕ) : ℕ :=
+   let (p,q) := least_prime_factorization n 2
+    let prod := (p - 1) * (q - 1)
+    let d := gcdA_adv e prod
+    decryption c d n
+#eval decryption_by_brute_force 467 7 6336
+
 -- #eval decryption_by_brute_force 1473513 2430101
+

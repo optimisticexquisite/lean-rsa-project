@@ -16,20 +16,24 @@ extern "C" {
 static lean_object* l_public__key__generator___closed__2;
 static lean_object* l_public__key__generator___closed__6;
 LEAN_EXPORT lean_object* l_public__key__generator___boxed(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_decryption__by__brute__force___boxed(lean_object*, lean_object*, lean_object*);
 static lean_object* l_public__key__generator___closed__4;
 uint8_t l_Nat_instDecidableCoprime(lean_object*, lean_object*);
 static lean_object* l_public__key__generator___closed__5;
 lean_object* l_panic___at_String_toNat_x21___spec__1(lean_object*);
 static lean_object* l_public__key__generator___closed__3;
 lean_object* lean_nat_to_int(lean_object*);
+lean_object* lean_nat_div(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_encryption___boxed(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_encryption(lean_object*, lean_object*, lean_object*);
 lean_object* l___private_Init_Util_0__mkPanicMessageWithDecl(lean_object*, lean_object*, lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_gcdA__adv(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_decryption__by__brute__force(lean_object*, lean_object*, lean_object*);
 lean_object* lean_nat_pow(lean_object*, lean_object*);
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 lean_object* lean_nat_mod(lean_object*, lean_object*);
 lean_object* l_Nat_gcdA(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_least__prime__factorization(lean_object*, lean_object*);
 lean_object* l_Int_toNat(lean_object*);
 LEAN_EXPORT lean_object* l_decryption___boxed(lean_object*, lean_object*, lean_object*);
 uint8_t lean_int_dec_lt(lean_object*, lean_object*);
@@ -37,6 +41,7 @@ lean_object* lean_nat_sub(lean_object*, lean_object*);
 lean_object* lean_nat_mul(lean_object*, lean_object*);
 static lean_object* l_public__key__generator___closed__1;
 static lean_object* l_gcdA__adv___closed__1;
+LEAN_EXPORT lean_object* l_least__prime__factorization___boxed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_decryption(lean_object*, lean_object*, lean_object*);
 lean_object* lean_nat_add(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_public__key__generator(lean_object*, lean_object*, lean_object*);
@@ -257,6 +262,78 @@ lean_object* x_4;
 x_4 = l_decryption(x_1, x_2, x_3);
 lean_dec(x_3);
 lean_dec(x_2);
+lean_dec(x_1);
+return x_4;
+}
+}
+LEAN_EXPORT lean_object* l_least__prime__factorization(lean_object* x_1, lean_object* x_2) {
+_start:
+{
+lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+x_3 = lean_nat_mod(x_1, x_2);
+x_4 = lean_unsigned_to_nat(0u);
+x_5 = lean_nat_dec_eq(x_3, x_4);
+lean_dec(x_3);
+if (x_5 == 0)
+{
+lean_object* x_6; lean_object* x_7; 
+x_6 = lean_unsigned_to_nat(1u);
+x_7 = lean_nat_add(x_2, x_6);
+lean_dec(x_2);
+x_2 = x_7;
+goto _start;
+}
+else
+{
+lean_object* x_9; lean_object* x_10; 
+x_9 = lean_nat_div(x_1, x_2);
+x_10 = lean_alloc_ctor(0, 2, 0);
+lean_ctor_set(x_10, 0, x_2);
+lean_ctor_set(x_10, 1, x_9);
+return x_10;
+}
+}
+}
+LEAN_EXPORT lean_object* l_least__prime__factorization___boxed(lean_object* x_1, lean_object* x_2) {
+_start:
+{
+lean_object* x_3; 
+x_3 = l_least__prime__factorization(x_1, x_2);
+lean_dec(x_1);
+return x_3;
+}
+}
+LEAN_EXPORT lean_object* l_decryption__by__brute__force(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
+_start:
+{
+lean_object* x_4; lean_object* x_5; lean_object* x_6; lean_object* x_7; lean_object* x_8; lean_object* x_9; lean_object* x_10; lean_object* x_11; lean_object* x_12; lean_object* x_13; 
+x_4 = lean_unsigned_to_nat(2u);
+x_5 = l_least__prime__factorization(x_3, x_4);
+x_6 = lean_ctor_get(x_5, 0);
+lean_inc(x_6);
+x_7 = lean_ctor_get(x_5, 1);
+lean_inc(x_7);
+lean_dec(x_5);
+x_8 = lean_unsigned_to_nat(1u);
+x_9 = lean_nat_sub(x_6, x_8);
+lean_dec(x_6);
+x_10 = lean_nat_sub(x_7, x_8);
+lean_dec(x_7);
+x_11 = lean_nat_mul(x_9, x_10);
+lean_dec(x_10);
+lean_dec(x_9);
+x_12 = l_gcdA__adv(x_2, x_11);
+x_13 = l_decryption(x_1, x_12, x_3);
+lean_dec(x_12);
+return x_13;
+}
+}
+LEAN_EXPORT lean_object* l_decryption__by__brute__force___boxed(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
+_start:
+{
+lean_object* x_4; 
+x_4 = l_decryption__by__brute__force(x_1, x_2, x_3);
+lean_dec(x_3);
 lean_dec(x_1);
 return x_4;
 }
