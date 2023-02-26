@@ -20,3 +20,11 @@ def public_key_generator (p : ℕ) (q : ℕ)(e : ℕ ) : ℕ ×  ℕ × ℕ :=
   else
     (n,0,0)^ panic! "e and prod must be coprime"
  #eval public_key_generator 1223 1987 948047
+def encrytion (m : ℕ) (e : ℕ) (n : ℕ) : ℕ := 
+  let c := m^e % n
+  c
+def decryption (c : ℕ) (d : ℕ) (n : ℕ) : ℕ :=
+  let m := c^d % n
+  m
+#eval encrytion 1070777 948047 2430101
+#eval decryption 1473513 1051235 2430101
