@@ -19,23 +19,23 @@ def public_key_generator (p : ℕ) (q : ℕ)(e : ℕ ) : ℕ ×  ℕ × ℕ :=
     (n,e,d)
   else
     (n,0,0)^ panic! "e and prod must be coprime"
- #eval public_key_generator 1223 1987 948047
+#eval public_key_generator 67 97 7
 -- m is the message, e is the public key, n is the product of p and q
-def encrytion (m : ℕ) (e : ℕ) (n : ℕ) : ℕ := 
+def encryption (m : ℕ) (e : ℕ) (n : ℕ) : ℕ := 
   let c := m^e % n
   c
 -- c is the cipher text, d is the private key, n is the product of p and q
 def decryption (c : ℕ) (d : ℕ) (n : ℕ) : ℕ :=
   let m := c^d % n
   m
-#eval encrytion 1070777 948047 2430101
-#eval decryption 1473513 1051235 2430101
+#eval encryption 107 6499 6336
+#eval decryption 467 7 6336
 
-def factorization (n : ℕ) : ℕ × ℕ :=
-  let p := Nat.find_greatest_divisor n
-  let q := n / p
-  (p,q)
-#eval factorization 2430101
-def decryption_by_brute_force (c : ℕ) (n : ℕ) : ℕ :=
-  let (p,q) := Nat.factorization n
-#eval decryption_by_brute_force 1473513 2430101
+-- def factorization (n : ℕ) : ℕ × ℕ :=
+--   let p := Nat.find_greatest_divisor n
+--   let q := n / p
+--   (p,q)
+-- #eval factorization 2430101
+-- def decryption_by_brute_force (c : ℕ) (n : ℕ) : ℕ :=
+--   let (p,q) := Nat.factorization n
+-- #eval decryption_by_brute_force 1473513 2430101

@@ -12,6 +12,6 @@ lean_lib «RSAProject» {
 }
 
 @[default_target]
-lean_exe «rsa-project» {
+lean_exe «rsaproject» {
   root := `Main
 }
