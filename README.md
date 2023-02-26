@@ -12,9 +12,10 @@ Since the public key is made publicly available, if a person intercepts the mess
 Therefore, the keys in the key pair must be related in a manner which makes it impossible to calculate the private key from the public key.
 RSA is the most well known asymmetric cryptography. 
 The primary goal of this project is to use Lean 4 as a platform for implementation of the key generation, encryption and
-decryption algorithms as specified by the RSA specification. We plan to create a program to generate RSA public and private keys of minimum 2048 bits.
-We will also create a program for encrypting and decrypting large numbers as well as text files using RSA. 
-If time permits, we also plan to complete a peripheral objective of implementing the Chinese Remainder Theorem to facilitate decryption.
+decryption algorithms as specified by the RSA specification. We will also provide proof of correctness of the RSA algorithm, which primarily depends on Euler's theorem and the Chinese Remainder Theorem. 
+We plan to create a program to generate RSA public and private keys of minimum 2048 bits.
+We will also create a program for encrypting and decrypting large numbers as well as text files using RSA. If time permits, we also plan to complete a peripheral objective of implementing the Chinese Remainder Theorem to facilitate decryption.
+
 
 # Technicalities
 This project is running on Lean4 version leanprover/lean4:nightly-2023-02-23 <br /> <br />
