@@ -9,7 +9,8 @@ def inverse (a : ℕ) (b : ℕ) : ℕ :=
   else
     Int.toNat x
 
-#eval inverse 7 6336 
+#eval inverse 7 49 
+#eval inverse 7 6336
 
 def gcdA_adv (a : ℕ) (b : ℕ) : ℕ := 
 --gcdA is a function defined in GCD.lean in mathlib. It directly returns a for GCD=ax+by
