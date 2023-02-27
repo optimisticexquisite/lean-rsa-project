@@ -1,7 +1,6 @@
 import Mathlib 
-
-def max : Nat := 256
-def min : Nat := 1
+def MAX : Nat := 256
+def MIN : Nat := 1
 --MULTIPLICATIVE INVERSE FUNCTION
 --we will use Euclid's algorithm to find multiplicative inverse of 
 --natural number number n modulo natural number r.
@@ -21,12 +20,19 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
 #eval multiplicative_inverse 15 821
 
 --COPRIME NUMBER GENERATING FUNCTION
---Given a natural number r, we will generate a number random coprime to it, provided that r is not divisible by each number between min & max
+--Given a natural number r, we will generate a number coprime to it, provided that r is not divisible by each number between min & max
 --def coprime_generator (r:Nat) : Nat := 
   --let l := List.range max 
   --let potential_coprime := List.filter (Nat.gcd · r = 1) l
   --match potential_coprime with 
  -- | [] => panic!"There is no number in the range that is coprime to the input"
  -- | (n::l) => n
- 
-      
+ --For the time being, we make the following function using partial def. 
+partial def coprime_generator (r : Nat) : Nat :=
+let limit := MAX - MIN + 1
+let n := Int.toNat (Rand (limit : Nat))
+if n >= 3 ∧ Nat.gcd (n r) = 1
+  then n
+else coprime_generator r  
+
+#eval coprime_generator 25 
