@@ -51,4 +51,5 @@ partial def coprime_generator (r:Nat) : Nat :=
  let n := rnd MIN MAX
  if 3 ≤ n ∧ Nat.gcd n r == 1 
  then n
- else coprime_generator r   
+ else coprime_generator r 
+--  #eval coprime_generator 1239928
