@@ -1,4 +1,6 @@
 import Mathlib 
+import Mathlib.Control.Random
+
 def MAX : Nat := 256
 def MIN : Nat := 1
 --MULTIPLICATIVE INVERSE FUNCTION
@@ -19,7 +21,7 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
 #eval multiplicative_inverse 12 75
 #eval multiplicative_inverse 15 821
 
---COPRIME NUMBER GENERATING FUNCTION
+--                 COPRIME NUMBER GENERATING FUNCTION
 --Given a natural number r, we will generate a number coprime to it, provided that r is not divisible by each number between min & max
 --def coprime_generator (r:Nat) : Nat := 
   --let l := List.range max 
@@ -28,11 +30,25 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
  -- | [] => panic!"There is no number in the range that is coprime to the input"
  -- | (n::l) => n
  --For the time being, we make the following function using partial def. 
-partial def coprime_generator (r : Nat) : Nat :=
-let limit := MAX - MIN + 1
-let n := Int.toNat (Rand (limit : Nat))
-if n >= 3 ∧ Nat.gcd (n r) = 1
-  then n
-else coprime_generator r  
 
-#eval coprime_generator 25 
+ 
+--partial def coprime_generator (r : Nat) : Nat :=
+  --let n := (randNat MIN MAX)   
+  --  if .toNat n >= 3 ∧ Nat.gcd (n r) = 1
+  --then .toNat n 
+  --else coprime_generator r  
+
+  --def generateRandomNumber (min max : Nat) : IO Nat := do
+  --let gen : StdGen := mkStdGen (← randNat MIN MAX)
+  --let n : Nat := IO.runRand (StdRand.mk gen) fun g => RandomGen.oneOf (RandomGen.range g min max)
+  --pure n
+
+--For the time being, we make the following function using partial def. 
+
+def rnd (lo hi: Nat) : Nat := ((IO.rand lo hi).run' ()).get!
+#eval rnd MIN MAX
+partial def coprime_generator (r:Nat) : Nat := 
+ let n := rnd MIN MAX
+ if 3 ≤ n ∧ Nat.gcd n r == 1 
+ then n
+ else coprime_generator r   
