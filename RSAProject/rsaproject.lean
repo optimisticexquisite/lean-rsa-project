@@ -12,6 +12,15 @@ def inverse (a : ℕ) (b : ℕ) : ℕ :=
 #eval inverse 7 49 
 #eval inverse 7 6336
 
+partial def fast_powermod (a : ℕ) (b : ℕ) (n : ℕ) : ℕ :=
+  if b = 0 then 1
+  else if b % 2 = 0 then
+    let x := fast_powermod a (b/2) n
+    (x*x) % n
+  else
+    (a * fast_powermod a (b-1) n) % n
+
+
 def gcdA_adv (a : ℕ) (b : ℕ) : ℕ := 
 --gcdA is a function defined in GCD.lean in mathlib. It directly returns a for GCD=ax+by
 --This is the approach via Euclidian Algorithm. We can also use Gauss's Lemma to find the inverse of a mod b  
@@ -34,13 +43,16 @@ def public_key_generator (p : ℕ ) (q : ℕ)(e : ℕ ) : ℕ ×  ℕ × ℕ :=
   else
     (n,0,0)^ panic! "e and prod must be coprime"
 #eval public_key_generator 67 97 7
+
 -- m is the message, e is the public key, n is the product of p and q
 def encryption (m : ℕ) (e : ℕ) (n : ℕ) : ℕ := 
-  let c := m^e % n
+  -- let c := m^e % n
+  let c := fast_powermod m e n
   c
 -- c is the cipher text, d is the private key, n is the product of p and q
 def decryption (c : ℕ) (d : ℕ) (n : ℕ) : ℕ :=
-  let m := c^d % n
+  -- let m := c^d % n
+  let m := fast_powermod c d n
   m
 #eval encryption 107 7 6499
 #eval decryption 2501 5431 6499
