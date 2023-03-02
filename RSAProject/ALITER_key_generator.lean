@@ -158,9 +158,13 @@ while_2 result number divisor divisor2 prime
 
 
 ----------KEY GENERATING FUNCTION-----------
-def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
+partial def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
   let p := prime_generator 
-  let q := prime_generator 
+  let rec loop (p:Nat): Nat :=
+    let q := prime_generator 
+    if q = p then loop p
+    else q
+  let q := loop p
   let n := p * q
   let r := (p - 1) * (q - 1)
   let c := coprime_generator r
