@@ -166,12 +166,11 @@ def key_generator :  (Nat × Nat × Nat × Nat × Nat) :=
   let c := coprime_generator r
   let d := multiplicative_inverse c r 
   (p, q, c, n, d)
+
    
  
 
 
-------CIPHER FUNCTION-----
-def cipher (exp text mod : Nat) : IO Nat := do
-let mut result := 1
+
 
 
