@@ -51,16 +51,16 @@ partial def coprime_generator (r:Nat) : Nat :=
  let n := rnd MIN MAX
  if 3 ≤ n ∧ Nat.gcd n r == 1 
  then n
- else coprime_generator r   
+ else coprime_generator r 
 
 ----------- PRIME GENERATING FUNCTION --------
---partial def while_loop (condition : IO Bool) (action : IO (Option Unit)) : IO Unit :=
-  --condition >>= fun c =>
-  --if c then
-    --action >>= fun _ =>
-    --while_loop condition action
-  --else
-    --pure ()
+partial def while_loop (condition : IO Bool) (action : IO (Option Unit)) : IO Unit :=
+  condition >>= fun c =>
+  if c then
+    action >>= fun _ =>
+    while_loop condition action
+  else
+  pure ()
 
 --partial def impure_prime_generator : IO Nat := do
   --let mut prime1 : Bool := false 
@@ -90,29 +90,71 @@ partial def coprime_generator (r:Nat) : Nat :=
             --|_ => some (divisor + 2)
           --match divisor_ with
           --| none => pure()
-                         
-def impure_prime_generator : IO Nat := do
-  let mut divisor := 2
-  let mut prime := false
-  let mut result := 0
-  let mut number := 0
-  let mut divisor2 := 4
-  while (¬ prime) do
-    divisor := 2
-    divisor2 := 4
-    number ← IO.rand MIN MAX
-    while (divisor2 < number) do
-      result := number % divisor
-      if result = 0 then
-        prime := true 
-        divisor2 := divisor^2
-        divisor := if divisor = 2 then 3 else divisor + 2
-      if ¬ prime ∧ result ≠ 0 then
-        prime := true 
-  return number
+ --def impure_prime_generator : IO Nat := do
+  --let mut divisor := 2
+  --let mut prime := false
+  --let mut result := 0
+  --let mut number := 0
+  --let mut divisor2 := 4
+  --while_loop (pure (prime == false)) do
+    --let mut divisor := 2
+    --let mut divisor2 := 4
+    --let mut number ← IO.rand MIN MAX
+    --while_loop (pure (divisor2 < number)) do
+      --let mut result := number % divisor
+      --if result = 0 then
+        --let mut prime := false 
+        --return ()
+      --let mut divisor := if divisor = 2 then 3 else divisor + 2
+      --let mut divisor2 := divisor^2  
+      --if ¬ prime ∧ result ≠ 0 then
+        --let mut prime := true 
+  --return number
+
  
-def prime_generator : Nat:=
-  ((impure_prime_generator).run' ()).get!
+--def prime_generator : Nat:=
+  --((impure_prime_generator).run' ()).get!          
+          
+def while_1 (result number divisor divisor2 : Nat): Nat :=                     
+if (divisor2 < number ∧ result = 0) then 0
+else if (divisor2 >= number) then 1
+else if (divisor2 < number ∧ result ≠ 0 )  then       
+        if (divisor > 2) then 2
+        else 3
+else 4         
+partial def while_2 (result number divisor divisor2 : Nat) (prime : Bool): Nat :=      
+if prime = false then
+    if while_1 result number divisor divisor2 = 0 then 
+      let number_1 := rnd MIN MAX 
+      let result_1 := number_1%divisor
+      while_2 result_1 number_1 divisor divisor2 prime 
+    else if while_1 result number divisor divisor2 = 2
+          then let divisor_1 := divisor + 2
+            let divisor_1_sq := divisor_1*divisor_1
+            let result_2 := number%divisor_1  
+            while_2 result_2 number divisor_1 divisor_1_sq prime
+    else if while_2 result number divisor divisor2 = 3
+        then let divisor_2 := divisor + 1
+          let divisor_2_sq := divisor_2*divisor_2
+          let result_3 := number%divisor_2
+          while_2 result_3 number divisor_2 divisor_2_sq prime 
+    else
+      if result > 0 
+      then let prime1 := true
+      while_2 result number divisor divisor2 prime1
+      else let number_4 := rnd MIN MAX
+           while_2 result number_4 divisor divisor2 prime          
+else number
+
+def prime_generator : Nat :=
+let prime := false
+let divisor := 2
+let divisor2 := divisor*divisor
+let number := 6
+let result := 0 
+while_2 result number divisor divisor2 prime
+
+#eval prime_generator
 
 
 ----------KEY GENERATING FUNCTION-----------
@@ -127,4 +169,9 @@ def key_generator :  (Nat × Nat × Nat × Nat × Nat) :=
    
  
 
-#eval key_generator  
+
+------CIPHER FUNCTION-----
+def cipher (exp text mod : Nat) : IO Nat := do
+let mut result := 1
+
+
