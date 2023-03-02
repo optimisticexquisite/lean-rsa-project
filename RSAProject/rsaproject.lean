@@ -59,4 +59,3 @@ def decryption_by_brute_force (c : ℕ) (e : ℕ) (n : ℕ) : ℕ :=
 #eval decryption_by_brute_force 2501 7 6499
 
 -- #eval decryption_by_brute_force 1473513 2430101
-
