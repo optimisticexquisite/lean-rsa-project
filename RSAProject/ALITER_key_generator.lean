@@ -54,6 +54,18 @@ partial def coprime_generator (r:Nat) : Nat :=
  then n
  else coprime_generator r 
 
+structure CoprimeTo (r : Nat) where
+  coprime : Nat
+  coprime_property : Nat.gcd coprime r = 1
+
+partial def coprime_generatorIO (r:Nat) : IO (CoprimeTo r) := do
+ let n ← IO.rand  MIN MAX
+ if c:3 ≤ n ∧ Nat.gcd n r = 1 
+ 
+ then return ⟨n, c.right⟩
+ else coprime_generatorIO r 
+
+#check And
 ----------- PRIME GENERATING FUNCTION --------
 partial def while_loop (condition : IO Bool) (action : IO (Option Unit)) : IO Unit :=
   condition >>= fun c =>

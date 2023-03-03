@@ -1,4 +1,5 @@
 import Mathlib
+import RSAProject.ALITER_key_generator
 
 -- I copied this function from https://github.com/Shraze97/RSA-cryptosystems/blob/master/RSACryptosystems.lean
 -- This works, however the function gcdA doesn't seem to work
@@ -34,15 +35,13 @@ def gcdA_adv (a : ℕ) (b : ℕ) : ℕ :=
 def public_key_generator (p : ℕ ) (q : ℕ)(e : ℕ ) : ℕ ×  ℕ × ℕ := 
   let n := p * q 
   let prod :=  (p - 1) * (q - 1)
-  if p = q then 
-    (n,0,0) ^ panic! "p and q must be different"
-  else
   if Nat.gcd e prod = 1 then
     let d  :=  inverse e prod
     (n,e,d)
   else
     (n,0,0)^ panic! "e and prod must be coprime"
-#eval public_key_generator 67 97 7
+-- #eval public_key_generator 67 97 (coprime_generator (66*96))
+#eval public_key_generator 67 97 127
 
 -- m is the message, e is the public key, n is the product of p and q
 def encryption (m : ℕ) (e : ℕ) (n : ℕ) : ℕ := 
