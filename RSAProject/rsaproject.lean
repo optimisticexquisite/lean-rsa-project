@@ -69,4 +69,30 @@ def decryption_by_brute_force (c : ℕ) (e : ℕ) (n : ℕ) : ℕ :=
     decryption c d n
 #eval decryption_by_brute_force 2501 7 6499
 
+#check Nat.Prime
+#eval Nat.Prime 7
+#check Nat.totient_mul
 -- #eval decryption_by_brute_force 1473513 2430101
+#check Int.gcd_eq_one_iff_coprime
+
+lemma totient_of_prime (p:Nat) (hp: Nat.Prime p): Nat.totient p = p - 1 := by
+    rw [Nat.totient_prime hp]
+theorem totient_product_of_two_primes (p q : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: p.coprime q) : Nat.totient (p*q) = (p - 1) * (q - 1) := by
+  have h1 : Nat.totient (p*q) = Nat.totient p * Nat.totient q := by
+   rw [Nat.totient_mul hr]
+  have h2 : Nat.totient p * Nat.totient q = (p - 1) * (q - 1) := by
+   rw [totient_of_prime p hp, totient_of_prime q hq]
+  have h3 : Nat.totient (p*q) = (p - 1) * (q - 1) := by
+   rw [h1, h2]
+  apply h3
+#check totient_product_of_two_primes 67 97
+
+
+
+
+
+
+
+
+theorem euler_theorem (a : Nat) (n : Nat) (hp: a.coprime n) : a ^ (Nat.totient n) % n = 1 := by
+  
