@@ -1,6 +1,7 @@
 import Mathlib 
 import Mathlib.Control.Random
 import RSAProject.ALITER_Cipher
+import RSAProject.Sampling
 
 def MAX : Nat := 256
 def MIN : Nat := 1
@@ -17,7 +18,7 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
     let (x, _) := Nat.xgcd n r --this gives k for kn+br=1
     if x > 0 then
        Int.toNat x --had to convert to Natural type
-    else Int.toNat (x+r) --for negative x, we take x+r because x = x+r (mod r)   
+    else Int.toNat (x%r) --for negative x, we take x+r because x = x+r (mod r)   
 
 #eval multiplicative_inverse 12 75
 #eval multiplicative_inverse 15 821

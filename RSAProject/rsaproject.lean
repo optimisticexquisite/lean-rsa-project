@@ -86,13 +86,17 @@ theorem totient_product_of_two_primes (p q : Nat) (hp: Nat.Prime p) (hq: Nat.Pri
    rw [h1, h2]
   apply h3
 #check totient_product_of_two_primes 67 97
+#check Nat.mul_one
+#check Nat.coprime.mul
+#check Nat.coprime_iff_gcd_eq_one
 
+theorem coprime_product_comprime (x : Nat) (z : Nat) (y : Nat) (hp: Nat.coprime x z) (hq: Nat.coprime y z) : Nat.coprime (x*y) z := by
+  apply Nat.coprime.mul hp hq
 
-
-
-
-
-
-
-theorem euler_theorem (a : Nat) (n : Nat) (hp: a.coprime n) : a ^ (Nat.totient n) % n = 1 := by
-  
+theorem list_product_same_modulo (l1 : List ℕ) (a : ℕ) (n : ℕ) (hp: ∀ x ∈ l1, Nat.coprime x n) : ∀ x ∈ l1, Nat.coprime (x*a) n := by
+induction l1 with
+  | nil => 
+    simp [List.remove]
+  | cons h' t ih =>
+    
+    
