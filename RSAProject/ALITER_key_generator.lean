@@ -13,12 +13,12 @@ def MIN : Nat := 1
 --Euclid's algorithm gives us integers x, y such that xn+yr = 1.  
 def multiplicative_inverse (n : Nat) (r : Nat) : Nat := 
   if Nat.gcd n r > 1
-    then 1^panic!"input numbers are not coprime"
+    then 0
   else         
     let (x, _) := Nat.xgcd n r --this gives k for kn+br=1
     if x > 0 then
        Int.toNat x --had to convert to Natural type
-    else Int.toNat (x%r) --for negative x, we take x+r because x = x+r (mod r)   
+    else Int.toNat (x % r) --for negative x, we take x+r because x = x+r (mod r)   
 
 #eval multiplicative_inverse 12 75
 #eval multiplicative_inverse 15 821
@@ -46,27 +46,27 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
   --pure n
 
 --For the time being, we make the following function using partial def. 
-
+  def rangeFrom1ToN : (n:Nat) → List Nat
+| 0   => []
+| n+1 => (rangeFrom1ToN n) ++ [n+1]
 def rnd (lo hi: Nat) : Nat := ((IO.rand lo hi).run' ()).get!
 
-partial def coprime_generator (r:Nat) : Nat := 
- let n := rnd MIN MAX
- if 3 ≤ n ∧ Nat.gcd n r == 1 
- then n
- else coprime_generator r 
+def coprime_generator (r:Nat) : Nat := 
+ let n := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.coprime r x) 1 (by sorry) (by sorry)
+ n
 
 structure CoprimeTo (r : Nat) where
   coprime : Nat
   coprime_property : Nat.gcd coprime r = 1
 
-partial def coprime_generatorIO (r:Nat) : IO (CoprimeTo r) := do
- let n ← IO.rand  MIN MAX
- if c:3 ≤ n ∧ Nat.gcd n r = 1 
+-- partial def coprime_generatorIO (r:Nat) : IO (CoprimeTo r) := do
+--  let n ← IO.rand  MIN MAX
+--  if c:3 ≤ n ∧ Nat.gcd n r = 1 
  
- then return ⟨n, c.right⟩
- else coprime_generatorIO r 
+--  then return ⟨n, c.right⟩
+--  else coprime_generatorIO r 
 
-#check And
+
 ----------- PRIME GENERATING FUNCTION --------
 partial def while_loop (condition : IO Bool) (action : IO (Option Unit)) : IO Unit :=
   condition >>= fun c =>
@@ -170,20 +170,31 @@ while_2 result number divisor divisor2 prime
 
 #eval prime_generator
 
-
+def prime_generator_2 : Nat :=
+pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 1 (by sorry) (by sorry)
 ----------KEY GENERATING FUNCTION-----------
-partial def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
-  let p := prime_generator 
-  let rec loop (p:Nat): Nat :=
-    let q := prime_generator 
-    if q = p then loop p
-    else q
-  let q := loop p
+def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
+  let p := prime_generator_2 
+  let q := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x ∧ x ≠ p ) 1 (by sorry) (by sorry)
+  -- let rec loop (p:Nat): Nat :=
+  --   let q := prime_generator_2
+  --   if q = p then loop p
+  --   else q
+  -- let q := loop p
   let n := p * q
   let r := (p - 1) * (q - 1)
   let c := coprime_generator r
   let d := multiplicative_inverse c r 
   (p, q, c, n, d)
+
+#eval key_generator
+
+-- Use the function to create a list of numbers from 1 to 5
+-- def main : IO Unit := do
+--   let myList : List Nat := rangeFrom1ToN 5
+--   IO.println myList
+
+#eval pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 1 (by sorry) (by sorry)
 
    
  
