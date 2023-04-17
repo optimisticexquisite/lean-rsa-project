@@ -104,7 +104,8 @@ def pickElemD [DecidableEq α](l: List α)(p: α → Bool)(default : α)(h₁ : 
 
 We used the IO Monad which has a lot of stuff besides randomness. We will now demistify this by constructing a Monad for randomness only.
 -/
-#eval pickElemD [1,2,3,4,5,6,7,8,9,10,11,12] (fun x => Nat.Prime x) 1 (by sorry) (by sorry)
+#eval pickElemIO [1,2,3,4,5,6,7,8,9,10,11,12] (fun x => Nat.Prime x) ⟨2, by simp, rfl⟩
+#eval pickElemD [1,2,3,4,5,6,7,8,9,10,11,12] (fun x => Nat.Prime x) 2 (by simp) rfl
 #check StdGen
 #check mkStdGen -- mkStdGen (s : ℕ := 0) : StdGen
 #check randNat -- randNat.{u} {gen : Type u} [inst✝ : RandomGen gen] (g : gen) (lo hi : ℕ) : ℕ × gen

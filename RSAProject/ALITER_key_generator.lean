@@ -1,9 +1,9 @@
 import Mathlib 
 import Mathlib.Control.Random
-import RSAProject.ALITER_Cipher
+-- import RSAProject.ALITER_Cipher
 import RSAProject.Sampling
 
-def MAX : Nat := 256
+def MAX : Nat := 12
 def MIN : Nat := 1
 --          MULTIPLICATIVE INVERSE FUNCTION
 --we will use Euclid's algorithm to find multiplicative inverse of 
@@ -52,7 +52,7 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
 def rnd (lo hi: Nat) : Nat := ((IO.rand lo hi).run' ()).get!
 
 def coprime_generator (r:Nat) : Nat := 
- let n := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.coprime r x) 1 (by sorry) (by sorry)
+ let n := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.coprime r x) 2 (by simp) rfl
  n
 
 structure CoprimeTo (r : Nat) where
@@ -171,11 +171,11 @@ while_2 result number divisor divisor2 prime
 #eval prime_generator
 
 def prime_generator_2 : Nat :=
-pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 1 (by sorry) (by sorry)
+pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 2 (by simp) rfl
 ----------KEY GENERATING FUNCTION-----------
 def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
   let p := prime_generator_2 
-  let q := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x ∧ x ≠ p ) 1 (by sorry) (by sorry)
+  let q := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x ∧ x ≠ p ) 2 (by simp) sorry
   -- let rec loop (p:Nat): Nat :=
   --   let q := prime_generator_2
   --   if q = p then loop p
@@ -194,7 +194,7 @@ def key_generator :  (Nat × Nat × Nat × Nat × Nat) :=
 --   let myList : List Nat := rangeFrom1ToN 5
 --   IO.println myList
 
-#eval pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 1 (by sorry) (by sorry)
+#eval pickElemD [1,2,3,4,5,6,7,8,9,10,11,12] (fun x => Nat.Prime x) 2 (by simp) rfl
 
    
  

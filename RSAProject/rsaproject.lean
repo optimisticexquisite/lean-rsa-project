@@ -90,13 +90,32 @@ theorem totient_product_of_two_primes (p q : Nat) (hp: Nat.Prime p) (hq: Nat.Pri
 #check Nat.coprime.mul
 #check Nat.coprime_iff_gcd_eq_one
 
+def rangeFrom1ToN : (n:Nat) → List Nat
+| 0   => []
+| n+1 => (rangeFrom1ToN n) ++ [n+1]
+
+-- Use the function to create a list of numbers from 1 to 5
+def main : IO Unit := do
+  let myList : List Nat := rangeFrom1ToN 5
+  IO.println myList
+
+#eval main
+
 theorem coprime_product_comprime (x : Nat) (z : Nat) (y : Nat) (hp: Nat.coprime x z) (hq: Nat.coprime y z) : Nat.coprime (x*y) z := by
   apply Nat.coprime.mul hp hq
 
+
+
 theorem list_product_same_modulo (l1 : List ℕ) (a : ℕ) (n : ℕ) (hp: ∀ x ∈ l1, Nat.coprime x n) : ∀ x ∈ l1, Nat.coprime (x*a) n := by
-induction l1 with
-  | nil => 
-    simp [List.remove]
-  | cons h' t ih =>
+  intro x
+  intro hx
+  have coprime_x_n : Nat.coprime x n := hp x hx
+  rw [Nat.coprime, Nat.gcd_mul_left]
+  rw [Nat.coprime] at coprime_x_n
+  rw [coprime_x_n]
+    
+
+    
+      
     
     
