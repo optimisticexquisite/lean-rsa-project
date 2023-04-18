@@ -131,10 +131,17 @@ def new_totient_list (l : List Nat) (a : Nat) : List Nat :=
 #eval list_modulo (new_totient_list (totient_list 7 11) 9) 77
 #eval new_totient_list (totient_list 7 11) 6
 
-def is_group (l : List Nat) : Prop :=
-  ∀ x y : Nat, x ∈ l → y ∈ l → x + y ∈ l -- Closure under addition
-  ∧ ∀ x : Nat, x ∈ l → ∃ y : Nat, y ∈ l ∧ x + y = 0 -- Existence of inverse element
-  ∧ ∀ x y z : Nat, x ∈ l → y ∈ l → z ∈ l → x + y = y + z → x = z -- Associativity of addition
+open Nat
+open List
+
+def coprime_list (n : ℕ) : List ℕ :=
+List.filter (fun x => x.coprime n) (List.range n)
+
+def is_group_modulo_n (n : ℕ) (l : List ℕ) : Prop :=
+  (∀ a b : Nat, a ∈ l → b ∈ l →  (a * b) % n ∈ l) ∧ -- Closure under multiplication modulo n
+  (∃ z ∈ l, ∀ a ∈ l, (a * z) % n = a) ∧ -- Existence of identity element
+  (∀ a ∈ l, ∃ b ∈ l, (a * b) % n = 1) -- Existence of inverse elements
+
 
 
 ---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
@@ -159,6 +166,81 @@ theorem product_same_modulo_pq (l1 : List Nat) (l2 : List Nat) (p : Nat) (q : Na
   have h2: product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
    rw [product_of_two_permutation_lists l1 l2 h1]
   apply h2
+
+
+
+-- theorem coprime_list_group (n : ℕ) (hn : 1 < n) : is_group_modulo_n n (coprime_list n) := by
+ 
+--   split
+--   { intros a b ha hb
+--     rw [← mem_filter, ← mem_range] at ha hb
+--     rw [← mem_filter, ← mem_range]
+--     split
+--     { apply mod_lt _ hn }
+--     { exact coprime_mul (hb.right) (ha.right) } }
+ 
+
+--   -- Closure under multiplication modulo n
+--   { intros a b ha hb
+--     rw [← mem_filter, ← mem_range] at ha hb
+--     rw [← mem_filter, ← mem_range]
+--     split
+--     { apply mod_lt _ hn }
+--     { exact coprime_mul (hb.right) (ha.right) } }
+
+--   -- Existence of identity element
+--   { use 1
+--     split
+--     { rw [← mem_filter, ← mem_range]
+--       split
+--       { exact lt_succ_self _ }
+--       { exact coprime_one_left _ } }
+--     { intros a ha
+--       rw [mul_one, mod_eq_of_lt]
+--       rw [← mem_filter, ← mem_range] at ha
+--       exact ha.left } }
+
+--   -- Existence of inverse elements
+--   { intros a ha
+--     rw [← mem_filter, ← mem_range] at ha
+--     use a.coprime_reciprocal_left (pos_of_lt ha.left hn).ne' ha.right
+--     split
+--     { rw [← mem_filter, ← mem_range]
+--       split
+--       { apply mod_lt _ hn }
+--       { exact ha.right.reciprocal_left_coprime } }
+--     { rw [mul_comm, ← coprime_mul_eq_one_left (pos_of_lt ha.left hn).ne']
+--       exact ha.right } }
+
+-- theorem coprime_mul_permutation (n : ℕ) (hn : 1 < n) (x : ℕ) (hx : coprime x n) :
+--   coprime_list n ~ List.map (fun a => (a * x) % n) (coprime_list n) := by
+--   apply List.perm
+--   intro a
+--   rw [mem_map, mem_coprime_list, mem_coprime_list]
+--   split
+--   { rintro ⟨b, hb, rfl⟩
+--     rw [← mem_coprime_list] at hb
+--     exact coprime_mul_right hx hb.right }
+--   { intro hxa
+--     use a * coprime_reciprocal_left (pos_of_lt (mod_lt a hn) hn).ne' hx
+--     split
+--     { rw [← mem_coprime_list]
+--       exact coprime_mul_right hx hxa }
+--     { rw [mul_mod_right]
+--       rw [← coprime_mul_eq_one_left (pos_of_lt (mod_lt a hn) hn).ne'] at hxa }}
+     
+
+
+
+
+
+
+
+
+-- def is_group (l : List Nat) : Prop :=
+--   ∀ x y : Nat, x ∈ l → y ∈ l → x + y ∈ l -- Closure under addition
+--   ∧ ∀ x : Nat, x ∈ l → ∃ y : Nat, y ∈ l ∧ x + y = 0 -- Existence of inverse element
+--   ∧ ∀ x y z : Nat, x ∈ l → y ∈ l → z ∈ l → x + y = y + z → x = z -- Associativity of addition
 
   
   
