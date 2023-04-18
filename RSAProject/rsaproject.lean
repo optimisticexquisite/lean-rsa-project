@@ -1,8 +1,7 @@
 import Mathlib
 import RSAProject.ALITER_key_generator
 
--- I copied this function from https://github.com/Shraze97/RSA-cryptosystems/blob/master/RSACryptosystems.lean
--- This works, however the function gcdA doesn't seem to work
+
 def inverse (a : ℕ) (b : ℕ) : ℕ := 
   let (x, _) := Nat.xgcd a b
   if x < 0 then 
@@ -157,15 +156,17 @@ def product_of_all_elements_in_list (l : List Nat) : Nat :=
 --- If two lists are permutations of each other, then their product is equal
 theorem product_of_two_permutation_lists (l1 : List Nat) (l2 : List Nat) (h1: List.Perm l1 l2) : product_of_all_elements_in_list l1 = product_of_all_elements_in_list l2 := by
   have h2: l1 = l2 := by
-   apply permutation_of_totient_list
+  apply permutation_of_totient_list
   have h3: product_of_all_elements_in_list l1 = product_of_all_elements_in_list l2 := by
    rw [h2]
   apply h3
+  sorry
 
 theorem product_same_modulo_pq (l1 : List Nat) (l2 : List Nat) (p : Nat) (q : Nat) (h1: List.Perm l1 l2) : product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
   have h2: product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
    rw [product_of_two_permutation_lists l1 l2 h1]
   apply h2
+  sorry
 
 
 
@@ -233,7 +234,7 @@ theorem product_same_modulo_pq (l1 : List Nat) (l2 : List Nat) (p : Nat) (q : Na
 
 
 
-
+#check List.mem_filter
 
 
 
