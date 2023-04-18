@@ -52,7 +52,7 @@ def multiplicative_inverse (n : Nat) (r : Nat) : Nat :=
 def rnd (lo hi: Nat) : Nat := ((IO.rand lo hi).run' ()).get!
 
 def coprime_generator (r:Nat) : Nat := 
- let n := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.coprime r x) 2 (by simp) rfl
+ let n := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.coprime r x) 2 (by simp) (by sorry)
  n
 
 structure CoprimeTo (r : Nat) where

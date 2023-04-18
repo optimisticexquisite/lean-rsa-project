@@ -90,9 +90,9 @@ theorem totient_product_of_two_primes (p q : Nat) (hp: Nat.Prime p) (hq: Nat.Pri
 #check Nat.coprime.mul
 #check Nat.coprime_iff_gcd_eq_one
 
-def rangeFrom1ToN : (n:Nat) → List Nat
-| 0   => []
-| n+1 => (rangeFrom1ToN n) ++ [n+1]
+-- def rangeFrom1ToN : (n:Nat) → List Nat
+-- | 0   => []
+-- | n+1 => (rangeFrom1ToN n) ++ [n+1]
 
 -- Use the function to create a list of numbers from 1 to 5
 def main : IO Unit := do
@@ -105,17 +105,36 @@ theorem coprime_product_comprime (x : Nat) (z : Nat) (y : Nat) (hp: Nat.coprime 
   apply Nat.coprime.mul hp hq
 
 
+#check List.remove
 
-theorem list_product_same_modulo (l1 : List ℕ) (a : ℕ) (n : ℕ) (hp: ∀ x ∈ l1, Nat.coprime x n) : ∀ x ∈ l1, Nat.coprime (x*a) n := by
-  intro x
-  intro hx
-  have coprime_x_n : Nat.coprime x n := hp x hx
-  rw [Nat.coprime, Nat.gcd_mul_left]
-  rw [Nat.coprime] at coprime_x_n
-  rw [coprime_x_n]
-    
+def list_of_multiples_of_p_till_q (p: Nat) (q: Nat) : List Nat := 
+  let newlist := rangeFrom1ToN q
+  let newlist2 := newlist.map (fun x => x*p)
+  newlist2
+#eval list_of_multiples_of_p_till_q 7 49
 
-    
-      
-    
-    
+def totient_list (p: Nat) (q: Nat) : List Nat := 
+  let newlist := rangeFrom1ToN (p*q)
+  List.filter (fun x => x.coprime (p*q))
+  newlist
+#eval totient_list 7 11
+
+def list_modulo (l : List Nat) (n : Nat) : List Nat := 
+  l.map (fun x => x % n)
+
+--- This function returns a list by multipying each element of the list by a
+def new_totient_list (l : List Nat) (a : Nat) : List Nat := 
+  l.map (fun x => x*a)
+
+
+#eval list_modulo (totient_list 7 11) 77
+#eval list_modulo (new_totient_list (totient_list 7 11) 9) 77
+#eval new_totient_list (totient_list 7 11) 6
+
+---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
+theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
+  sorry
+  
+
+  
+  
