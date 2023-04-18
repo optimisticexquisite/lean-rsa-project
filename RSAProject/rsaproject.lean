@@ -131,6 +131,11 @@ def new_totient_list (l : List Nat) (a : Nat) : List Nat :=
 #eval list_modulo (new_totient_list (totient_list 7 11) 9) 77
 #eval new_totient_list (totient_list 7 11) 6
 
+def is_group (l : List Nat) : Prop :=
+  ∀ x y : Nat, x ∈ l → y ∈ l → x + y ∈ l -- Closure under addition
+  ∧ ∀ x : Nat, x ∈ l → ∃ y : Nat, y ∈ l ∧ x + y = 0 -- Existence of inverse element
+  ∧ ∀ x y z : Nat, x ∈ l → y ∈ l → z ∈ l → x + y = y + z → x = z -- Associativity of addition
+
 
 ---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
 theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
