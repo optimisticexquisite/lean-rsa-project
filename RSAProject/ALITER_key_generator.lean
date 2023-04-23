@@ -168,22 +168,26 @@ let number := 6
 let result := 0 
 while_2 result number divisor divisor2 prime
 
+def remove_same_prime (p q : Nat) (l: List Nat) : (List Nat) :=
+if p = q then
+l.filter (fun x => x ≠ p)
+else l
+#eval remove_same_prime 2 2 (rangeFrom1ToN MAX)
 def prime_generator_2 : Nat :=
-pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 2 (by simp) rfl
+pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 3 (by simp) rfl
+theorem atleast_two_primes_in_range1toN : ∀ (n : Nat), 2 ≤ n → 2 ≤ (rangeFrom1ToN n).length := sorry
 ----------KEY GENERATING FUNCTION-----------
 def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
   let p := prime_generator_2 
-  let q := pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x ∧ x ≠ p ) 2 (by simp) sorry
-  -- let rec loop (p:Nat): Nat :=
-  --   let q := prime_generator_2
-  --   if q = p then loop p
-  --   else q
-  -- let q := loop p
+  let newlist := remove_same_prime p p (rangeFrom1ToN MAX)
+  let newprime :=
+  let q := pickElemD (newlist) (fun x => Nat.Prime x) 2 (by simp) (by rfl)
   let n := p * q
   let r := (p - 1) * (q - 1)
   let c := coprime_generator r
   let d := multiplicative_inverse c r 
   (p, q, c, n, d)
+
 
 #eval key_generator
 
