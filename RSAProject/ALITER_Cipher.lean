@@ -7,27 +7,22 @@ namespace Nat
 def cipher (exp text mod : Nat) : Nat :=
   if mod = 0 then 0
   else
-  match exp with 
+  match exp with
   | 0 => 1
   | 1 => text % mod
-  | exp + 2 => 
-    if exp%2 = 0 then 
-    let c := cipher ((exp + 2)/2) text mod
+  | exp' + 2 =>
+    if exp' % 2 = 0 then
+    have : succ (exp' / 2) < succ (succ exp') := by
+      apply Nat.succ_lt_succ
+      have ineq:= Nat.div_le_self exp' 2
+      apply Nat.lt_of_le_of_lt ineq
+      simp
+    let c := cipher ((exp' + 2)/2) text mod
     (c * c) % mod
-  else 
-    (text * (cipher (exp + 1) text mod)) % mod
+  else
+    (text * (cipher (exp' + 1) text mod)) % mod
 termination_by _ _ => exp
-decreasing_by
-have h01 : 1 < 2 := by trivial
-simp
-have h02 : 0 ≤ exp := by apply Nat.zero_le exp
-have h1 :  (exp + 1) <  exp + 2 := by
-  apply Nat.add_lt_add_left
-  apply h01
-simp[Nat.succ_eq_add_one]
-have h2 :  ((exp + 2)/2) ≤  exp + 2 := by
-  apply Nat.div_le_self
-sorry
+
 
 #eval cipher 4 3 5
 
@@ -44,15 +39,6 @@ def decrypt (ciphertext exp mod : Nat) : Nat :=
 let result := cipher exp ciphertext mod
 result
 
----Prove that the cipher function is a bijection---
-theorem cipher_bijection (exp text mod : Nat) : 
-  cipher exp text mod = cipher exp (cipher exp text mod) mod := by
-  induction exp with exp ih,
-  { simp[cipher] },
-  { simp[cipher],
-    rw[ih] },
-  { simp[cipher],
-    rw[ih] }
-    
+
 
  

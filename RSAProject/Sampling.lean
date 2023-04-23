@@ -112,6 +112,7 @@ We used the IO Monad which has a lot of stuff besides randomness. We will now de
 
 def RandomM α := StdGen → α × StdGen    
 
+
 #check IO.rand -- IO.rand (lo hi : ℕ) : IO ℕ
 namespace RandomM
 

@@ -168,8 +168,6 @@ let number := 6
 let result := 0 
 while_2 result number divisor divisor2 prime
 
-#eval prime_generator
-
 def prime_generator_2 : Nat :=
 pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 2 (by simp) rfl
 ----------KEY GENERATING FUNCTION-----------
