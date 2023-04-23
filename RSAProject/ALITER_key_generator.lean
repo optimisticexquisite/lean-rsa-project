@@ -173,12 +173,13 @@ if p = q then
 l.filter (fun x => x ≠ p)
 else l
 
-def prime_generator_2 : Nat :=
+def prime_generator_ : Nat :=
 pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 3 (by simp) rfl
-theorem atleast_two_primes_in_range1toN : ∀ (n : Nat), 2 ≤ n → 2 ≤ (rangeFrom1ToN n).length := sorry
+theorem atleast_two_primes_in_range : (3 ∈ (List.remove 2 (rangeFrom1ToN MAX))) :=
+by rw[List.mem_remove_iff]; simp
 ----------KEY GENERATING FUNCTION-----------
 def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
-  let p := prime_generator_2 
+  let p := prime_generator_ 
   let newlist := remove_same_prime p p (rangeFrom1ToN MAX)
   let newprime :=
   let q := pickElemD (newlist) (fun x => Nat.Prime x) 2 (by simp) (by rfl)
@@ -190,7 +191,7 @@ def key_generator :  (Nat × Nat × Nat × Nat × Nat) :=
 
 
 #eval key_generator
-#eval remove_same_prime 2 2 (rangeFrom1ToN MAX)
+
 -- Use the function to create a list of numbers from 1 to 5
 -- def main : IO Unit := do
 --   let myList : List Nat := rangeFrom1ToN 5
