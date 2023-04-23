@@ -179,10 +179,33 @@ theorem atleast_two_primes_in_range : (3 ∈ (List.remove 2 (rangeFrom1ToN MAX))
 by rw[List.mem_remove_iff]; simp
 ----------KEY GENERATING FUNCTION-----------
 def key_generator :  (Nat × Nat × Nat × Nat × Nat) := 
-  let p := prime_generator_ 
-  let newlist := remove_same_prime p p (rangeFrom1ToN MAX)
-  let newprime :=
-  let q := pickElemD (newlist) (fun x => Nat.Prime x) 2 (by simp) (by rfl)
+  let p := 2
+  --let newlist := remove_same_prime p p (rangeFrom1ToN MAX)
+
+  --let q := pickElemD (newlist) (fun x => Nat.Prime x) 2 (by simp) (by apply atleast_two_primes_in_range)
+  let q := prime_generator_
+  if p = q then 
+       if p = 2 then let newlist := remove_same_prime 2 2 (rangeFrom1ToN MAX)
+        let q := pickElemD (newlist) (fun x => Nat.Prime x) 3 (by simp) rfl
+        let n := p * q
+        let r := (p - 1) * (q - 1)
+        let c := coprime_generator r
+        let d := multiplicative_inverse c r 
+        (p, q, c, n, d)
+        else if p = 3 then let newlist1 := remove_same_prime 3 3 (rangeFrom1ToN MAX)
+        let q := pickElemD (newlist1) (fun x => Nat.Prime x) 2 (by simp) rfl
+        let n := p * q
+        let r := (p - 1) * (q - 1)
+        let c := coprime_generator r
+        let d := multiplicative_inverse c r 
+        (p, q, c, n, d)
+        else let q := 3
+        let n := p * q
+        let r := (p - 1) * (q - 1)
+        let c := coprime_generator r
+        let d := multiplicative_inverse c r
+        (p, q, c, n, d)
+  else 
   let n := p * q
   let r := (p - 1) * (q - 1)
   let c := coprime_generator r
