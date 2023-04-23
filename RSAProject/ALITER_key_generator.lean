@@ -172,7 +172,7 @@ def remove_same_prime (p q : Nat) (l: List Nat) : (List Nat) :=
 if p = q then
 l.filter (fun x => x ≠ p)
 else l
-#eval remove_same_prime 2 2 (rangeFrom1ToN MAX)
+
 def prime_generator_2 : Nat :=
 pickElemD (rangeFrom1ToN MAX) (fun x => Nat.Prime x) 3 (by simp) rfl
 theorem atleast_two_primes_in_range1toN : ∀ (n : Nat), 2 ≤ n → 2 ≤ (rangeFrom1ToN n).length := sorry
@@ -190,7 +190,7 @@ def key_generator :  (Nat × Nat × Nat × Nat × Nat) :=
 
 
 #eval key_generator
-
+#eval remove_same_prime 2 2 (rangeFrom1ToN MAX)
 -- Use the function to create a list of numbers from 1 to 5
 -- def main : IO Unit := do
 --   let myList : List Nat := rangeFrom1ToN 5
