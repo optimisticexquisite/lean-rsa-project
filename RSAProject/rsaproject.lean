@@ -120,6 +120,7 @@ def totient_list (p: Nat) (q: Nat) : List Nat :=
 
 def list_modulo (l : List Nat) (n : Nat) : List Nat := 
   l.map (fun x => x % n)
+#eval list_modulo (totient_list 7 11) 77
 
 --- This function returns a list by multipying each element of the list by a
 def new_totient_list (l : List Nat) (a : Nat) : List Nat := 
@@ -141,7 +142,33 @@ def is_group_modulo_n (n : ℕ) (l : List ℕ) : Prop :=
   (∃ z ∈ l, ∀ a ∈ l, (a * z) % n = a) ∧ -- Existence of identity element
   (∀ a ∈ l, ∃ b ∈ l, (a * b) % n = 1) -- Existence of inverse elements
 
+theorem product_of_two_primes_neq_zero (p: Nat) (q: Nat)  (hp: Nat.Prime p) (hq: Nat.Prime q) : p*q ≠ 0 := by
+  have h1 : p ≠ 0 := by
+    apply Nat.Prime.ne_zero hp
+  have h2 : q ≠ 0 := by
+    apply Nat.Prime.ne_zero hq
+  have h3 : p*q ≠ 0 := by
+    apply Nat.mul_ne_zero h1 h2
+  apply h3
+#check ZMod.card_units_eq_totient
 
+instance ne_zero_product_of_primes {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prime q) : NeZero (p * q) := by
+  have h1 : p ≠ 0 := by
+    apply Nat.Prime.ne_zero hp
+  have h2 : q ≠ 0 := by
+    apply Nat.Prime.ne_zero hq
+  have h3 : p*q ≠ 0 := by
+    apply Nat.mul_ne_zero h1 h2
+  have h : NeZero (p*q) := ⟨h3⟩
+  apply h
+#check ne_zero_product_of_primes
+
+-- instance : NeZero (n) := ⟨by apply product_of_two_primes_neq_zero⟩
+
+theorem euler_theorem (p: Nat) (q: Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) [NeZero (p*q)] [list1: Fintype (ZMod (p*q))ˣ]: ∀ t ∈ list1 , (t ^ Nat.totient (p*q)) % (p*q) = 1 := by
+  
+  have h1: Fintype.card (ZMod (p*q))ˣ = Nat.totient (p*q) := by
+    rw [ZMod.card_units_eq_totient]
 
 ---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
 theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
