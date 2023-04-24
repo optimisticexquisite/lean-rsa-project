@@ -165,7 +165,15 @@ instance ne_zero_product_of_primes {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prim
 #check orderOf
 #check Subgroup.mem_closure_singleton
 #check Subgroup.closure
-#eval (Zmod
+
+def ZMod.ofInt {n : Nat} (z : Int) : ZMod n :=
+  ⟨ z % n, _ ⟩ 
+
+
+instance (n : Nat) : Coe Int (ZMod n) where
+  coe := ZMod.ofInt
+
+#eval ZMod 7
 #eval Subgroup.closure (2 : (ZMod 7)ˣ)
 -- instance : NeZero (n) := ⟨by apply product_of_two_primes_neq_zero⟩
 -- Create subgroup out of an element
