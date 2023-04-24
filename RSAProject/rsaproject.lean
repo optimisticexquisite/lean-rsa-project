@@ -1,6 +1,6 @@
 import Mathlib
 import RSAProject.ALITER_key_generator
-
+import Mathlib.Tactic.Find
 
 def inverse (a : ℕ) (b : ℕ) : ℕ := 
   let (x, _) := Nat.xgcd a b
@@ -162,14 +162,26 @@ instance ne_zero_product_of_primes {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prim
   have h : NeZero (p*q) := ⟨h3⟩
   apply h
 #check ne_zero_product_of_primes
-
+#check orderOf
+#check Subgroup.mem_closure_singleton
+#check Subgroup.closure
+#eval (Zmod
+#eval Subgroup.closure (2 : (ZMod 7)ˣ)
 -- instance : NeZero (n) := ⟨by apply product_of_two_primes_neq_zero⟩
+-- Create subgroup out of an element
+-- #find Int → ZMod _
+#check fun n : Nat => inferInstanceAs <| Coe Int (ZMod n)
 
-theorem euler_theorem (p: Nat) (q: Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) [NeZero (p*q)] [list1: Fintype (ZMod (p*q))ˣ]: ∀ t ∈ list1 , (t ^ Nat.totient (p*q)) % (p*q) = 1 := by
-  
+theorem euler_theorem (p: Nat) (q: Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) [NeZero (p*q)] [list1: Fintype (ZMod (p*q))ˣ]:(∀ t ∈ list1 , (t ^ Nat.totient (p*q)) % (p*q) = 1):= by
   have h1: Fintype.card (ZMod (p*q))ˣ = Nat.totient (p*q) := by
     rw [ZMod.card_units_eq_totient]
-
+  have h2: NeZero (p*q) := by
+    apply ne_zero_product_of_primes hp hq
+  have hp: Nat.Prime p := by
+    apply hp
+  have hq: Nat.Prime q := by
+    apply hq
+  have h3: (Nat.totient (p*q)) % (orderOf ((ZMod (p*q))ˣ [Monoid (ZMod (p*q))ˣ]))
 ---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
 theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
   --Use List.Perm
