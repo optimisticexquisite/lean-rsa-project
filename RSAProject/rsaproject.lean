@@ -187,7 +187,10 @@ instance ne_zero_product_of_primes {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prim
 theorem lagrange_theorem {α : Type _} [Group α] [Fintype α] (a : α) :
     orderOf a ∣ (Fintype.card α) :=
   let H := Subgroup.closure {a}
-  have : orderOf a > 0 := sorry -- because otherwise H would be infinite
+  have : orderOf a > 0 := 
+  
+  
+  sorry -- because otherwise H would be infinite
   have : Fintype H := --
     { elems := ⟨Quotient.mk' <| List.range (orderOf a) |>.map fun n =>
                                   ⟨a^(n:ℤ), Subgroup.mem_closure_singleton.mpr ⟨n, rfl⟩⟩,
@@ -219,30 +222,30 @@ theorem euler_theorem (p: Nat) (q: Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) [lis
   apply lagrange_theorem
   -- have h3: (Nat.totient (p*q)) % (orderOf ((ZMod (p*q))ˣ [Monoid (ZMod (p*q))ˣ]))
 
----This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
-theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
-  --Use List.Perm
- have h1: List.Perm (list_modulo (new_totient_list (totient_list p q) a) (p*q)) (list_modulo (totient_list p q) (p*q)) := by
-  sorry
+-- ---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
+-- theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
+--   --Use List.Perm
+--  have h1: List.Perm (list_modulo (new_totient_list (totient_list p q) a) (p*q)) (list_modulo (totient_list p q) (p*q)) := by
+--   sorry
   
 def product_of_all_elements_in_list (l : List Nat) : Nat := 
   l.foldl (fun x y => x*y) 1
 #eval product_of_all_elements_in_list [1,2,3,4,5]
 
 --- If two lists are permutations of each other, then their product is equal
-theorem product_of_two_permutation_lists (l1 : List Nat) (l2 : List Nat) (h1: List.Perm l1 l2) : product_of_all_elements_in_list l1 = product_of_all_elements_in_list l2 := by
-  have h2: l1 = l2 := by
-  apply permutation_of_totient_list
-  have h3: product_of_all_elements_in_list l1 = product_of_all_elements_in_list l2 := by
-   rw [h2]
-  apply h3
-  sorry
+-- theorem product_of_two_permutation_lists (l1 : List Nat) (l2 : List Nat) (h1: List.Perm l1 l2) : product_of_all_elements_in_list l1 = product_of_all_elements_in_list l2 := by
+--   have h2: l1 = l2 := by
+--   apply permutation_of_totient_list
+--   have h3: product_of_all_elements_in_list l1 = product_of_all_elements_in_list l2 := by
+--    rw [h2]
+--   apply h3
+--   sorry
 
-theorem product_same_modulo_pq (l1 : List Nat) (l2 : List Nat) (p : Nat) (q : Nat) (h1: List.Perm l1 l2) : product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
-  have h2: product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
-   rw [product_of_two_permutation_lists l1 l2 h1]
-  apply h2
-  sorry
+-- theorem product_same_modulo_pq (l1 : List Nat) (l2 : List Nat) (p : Nat) (q : Nat) (h1: List.Perm l1 l2) : product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
+--   have h2: product_of_all_elements_in_list (list_modulo l1 (p*q)) = product_of_all_elements_in_list (list_modulo l2 (p*q)) := by
+--    rw [product_of_two_permutation_lists l1 l2 h1]
+--   apply h2
+--   sorry
 
 
 
