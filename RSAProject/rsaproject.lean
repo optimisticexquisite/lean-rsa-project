@@ -166,30 +166,59 @@ instance ne_zero_product_of_primes {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prim
 #check Subgroup.mem_closure_singleton
 #check Subgroup.closure
 
-def ZMod.ofInt {n : Nat} (z : Int) : ZMod n :=
-  ⟨ z % n, _ ⟩ 
-
-
-instance (n : Nat) : Coe Int (ZMod n) where
-  coe := ZMod.ofInt
-
-#eval ZMod 7
-#eval Subgroup.closure (2 : (ZMod 7)ˣ)
+-- #find Int → ZMod _
+#eval (4 : (ZMod 7))
+#check ZMod.card_units_eq_totient
+-- #eval (4 : (ZMod 7)ˣ)
+#check Subgroup.closure ({⟨2, 4, rfl, rfl⟩} : Set (ZMod 7)ˣ)
+#check Subgroup.mem_closure_singleton
+#check Subgroup.card_subgroup_dvd_card
 -- instance : NeZero (n) := ⟨by apply product_of_two_primes_neq_zero⟩
 -- Create subgroup out of an element
 -- #find Int → ZMod _
-#check fun n : Nat => inferInstanceAs <| Coe Int (ZMod n)
+-- #check fun n : Nat => inferInstanceAs <| Coe Int (ZMod n)
 
-theorem euler_theorem (p: Nat) (q: Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) [NeZero (p*q)] [list1: Fintype (ZMod (p*q))ˣ]:(∀ t ∈ list1 , (t ^ Nat.totient (p*q)) % (p*q) = 1):= by
-  have h1: Fintype.card (ZMod (p*q))ˣ = Nat.totient (p*q) := by
-    rw [ZMod.card_units_eq_totient]
+-- theorem euler_totient_theorem (n a : ℕ) (h : Nat.coprime a n) : a ^ Nat.totient n ≡ 1 [MOD n] := by
+-- let G := Units (ZMod n)ˣ
+-- let g := (a : G)
+-- have h1 : g ∈ G := by
+--   apply Units.is_unit
+
+theorem lagrange_theorem {α : Type _} [Group α] [Fintype α] (a : α) :
+    orderOf a ∣ (Fintype.card α) :=
+  let H := Subgroup.closure {a}
+  have : orderOf a > 0 := sorry -- because otherwise H would be infinite
+  have : Fintype H := --
+    { elems := ⟨Quotient.mk' <| List.range (orderOf a) |>.map fun n =>
+                                  ⟨a^(n:ℤ), Subgroup.mem_closure_singleton.mpr ⟨n, rfl⟩⟩,
+                -- no duplicates
+                sorry⟩
+      complete := fun ⟨x, h⟩ => by
+        obtain ⟨n, h⟩ := Subgroup.mem_closure_singleton.mp h
+        subst h
+        -- Show that all numbers from 0 to n are in range, in particular n % orderOf a
+        -- and use that.
+        /- show (⟨a^n, _⟩ : H) ∈ (List.range (orderOf a)).map fun m =>
+                                ⟨a^(m:ℤ), Subgroup.mem_closure_singleton.mpr ⟨m, rfl⟩⟩ -/
+        -- rw [pow_eq_mod_orderOf]
+        sorry }
+  have : Fintype.card H = orderOf a :=
+    -- length of List.range (orderOf a) is orderOf a
+    -- then some boilerplate
+    sorry
+  by rw [←this]; apply Subgroup.card_subgroup_dvd_card
+
+theorem euler_theorem (p: Nat) (q: Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) [list1: Fintype (ZMod (p*q))ˣ]
+    : ∀ t : (ZMod (p*q))ˣ, t ^ Nat.totient (p*q) = 1 := by
   have h2: NeZero (p*q) := by
     apply ne_zero_product_of_primes hp hq
-  have hp: Nat.Prime p := by
-    apply hp
-  have hq: Nat.Prime q := by
-    apply hq
-  have h3: (Nat.totient (p*q)) % (orderOf ((ZMod (p*q))ˣ [Monoid (ZMod (p*q))ˣ]))
+  have h1: Fintype.card (ZMod (p*q))ˣ = Nat.totient (p*q) := by
+    rw [ZMod.card_units_eq_totient]
+  intro t
+  rw [←orderOf_dvd_iff_pow_eq_one, ←h1]
+  apply lagrange_theorem
+  -- have h3: (Nat.totient (p*q)) % (orderOf ((ZMod (p*q))ˣ [Monoid (ZMod (p*q))ˣ]))
+
 ---This theorem proves that list_modulo of new_totient_list is equal to list_modulo of totient_list if p and q are prime and a is coprime to p*q
 theorem permutation_of_totient_list (p : Nat) (q : Nat) (a : Nat) (hp: Nat.Prime p) (hq: Nat.Prime q) (hr: Nat.coprime a (p*q)) : list_modulo (new_totient_list (totient_list p q) a) (p*q) = list_modulo (totient_list p q) (p*q) := by
   --Use List.Perm
